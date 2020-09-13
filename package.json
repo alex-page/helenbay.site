@@ -1,0 +1,50 @@
+{
+	"name": "helenbay.site",
+	"version": "0.0.0",
+	"private": "true",
+	"description": "Search the map to unlock the next quest!",
+	"author": {
+		"name": "Alex Page",
+		"email": "alex@alexpage.com.au",
+		"url": "http://alexpage.com.au/",
+		"twitter": "https://twitter.com/aalexpaage/"
+	},
+	"contributors": [
+		{
+			"name": "Alex Page",
+			"email": "alex@alexpage.com.au",
+			"url": "http://alexpage.com.au"
+		}
+	],
+	"scripts": {
+		"test": "npm run test:content && npm run test:scripts",
+		"test:content": "write-good *.md",
+		"test:scripts": "xo scritps/",
+		"build": "eleventy",
+		"watch": "eleventy --serve"
+	},
+	"engines": {
+		"node": "10"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/alex-page/app-template"
+	},
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/alex-page/app-template/issues"
+	},
+	"homepage": "https://github.com/alex-page/app-template#readme",
+	"dependencies": {
+		"@11ty/eleventy": "^0.11.0-beta.2",
+		"workbox-build": "^5.0.0",
+		"html-minifier": "^4.0.0"
+	},
+	"devDependencies": {
+		"write-good": "^1.0.2",
+		"xo": "^0.32.1"
+	},
+	"xo": {
+		"env": "browser"
+	}
+}

@@ -1,0 +1,281 @@
+:root {
+	--base-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--base-font-size: 1rem;
+
+	--border-color: #ccc;
+	--bg-color: #EFEFEF;
+	--bg-lighter-color: #fff;
+	--text-color: #24292e;
+	--subdued-color: #61676A;
+	--frame-background-color: #050505;
+	--success-color: #2ea44f;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+	font-family: var(--base-font);
+	font-size: var(--base-font-size);
+	font-weight: 300;
+	line-height: 1.5;
+	color: var(--text-color);
+}
+
+body {
+	margin: 0;
+	display: flex;
+	height: 100vh;
+	background: var(--bg-color);
+}
+
+h1,
+h2,
+p {
+	margin: 0;
+}
+
+h1,
+h2 {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+p,
+label {
+	font-size: 0.75rem;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid var(--border-color);
+}
+
+.card hr {
+	margin: 0.5rem -0.5rem;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+/* Main content style */
+main {
+	height: 100vh;
+	width: 100%;
+	background: var(--frame-background-color);
+}
+
+/* Sidebar style */
+aside {
+	max-width: 20rem;
+	width: calc(100% - 1rem);
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+}
+
+input {
+	border-radius: 0.25rem;
+	border: 1px solid var(--border-color);
+	width: 100%;
+	padding: 0.5rem 0.25rem;
+}
+
+.inline-layout {
+	display: flex;
+	align-items: center;
+}
+
+.inline-layout--top {
+	align-items: start;
+}
+
+.inline-layout > * + * {
+	margin-left: 0.5rem;
+}
+
+.task {
+	min-height: 1.875rem;
+}
+
+.card {
+	background: var(--bg-lighter-color);
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	border-bottom: 1px solid var(--border-color);
+}
+
+.card + .card {
+	margin-top: 0.5rem;
+}
+
+.avatar {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	display: inline;
+}
+
+.icon,
+.secret-icon {
+	font-size: 20px;
+	width: 30px;
+	text-align: center;
+	flex-shrink: 0;
+}
+
+/* Game logic */
+aside.loading > .card {
+	display: none;
+}
+
+.quest-title,
+.completed-game,
+.quest--locked .tasks,
+.quest--locked hr,
+.quest--active .locked-title,
+.quest--done .locked-title {
+	display: none;
+}
+
+.icon:before {
+	content: attr(data-emoji);
+}
+
+.secret-icon:before {
+	content: "✨";
+}
+
+.quest--locked .icon:before {
+	content: "🔒";
+}
+
+
+
+.quest {
+	will-change: height;
+	transition: height 300ms ease-in-out 0.5s;
+	overflow: hidden;
+}
+
+@keyframes glow {
+	0%, 100% {
+		transform: 0 0 10px #fcca25;
+	}
+	50% {
+		transform: 0 0 5px #fcca25;
+	}
+}
+
+.quest--done {
+	box-shadow: 0 0 2px #fcca25;
+	height: 56px !important;
+	animation: glow 1s ease-in-out;
+}
+
+.quest--done .icon:before {
+	content: "⭐️";
+}
+
+.quest--done .quest-title,
+.quest--active .quest-title {
+	display: block;
+}
+
+.task--active .icon:before {
+	content: "→";
+}
+
+.secret-task {
+	display: none;
+}
+
+.task--done + .secret-task {
+	display: flex;
+}
+
+.task p,
+.task label {
+	position: relative;
+}
+
+.task--done {
+	color: var(--success-color);
+}
+
+.task--locked {
+	color: var(--subdued-color);
+}
+
+.quest--done .icon,
+.task--done .icon,
+.task--done .secret-icon {
+	animation: bounce 0.3s ease-in-out;
+}
+
+.task--done .secret-icon:before,
+.task--done .icon:before {
+	content: "✓";
+}
+
+.task--locked .icon:before {
+	content: "";
+}
+
+@keyframes bounce {
+	0%, 100% {
+		transform: scale(1.0);
+	}
+	50% {
+		transform: scale(1.5);
+	}
+}
+
+.task label:before,
+.task p:before {
+	content: " ";
+	position: absolute;
+	display: block;
+	width: 100%;
+	border-top: 1px solid var(--success-color);
+	transform: scaleX(0%);
+	transition: transform 0.3s ease-in-out;
+	transform-origin: left;
+	top: 0.6rem;
+}
+
+.task--done p:before,
+.task--done label:before {
+	transform: scaleX(1);
+}
+
+.shake {
+	animation: shake 150ms ease-in-out 300ms;
+}
+
+@keyframes shake {
+	0%, 100% {
+		transform: translateX(0);
+	}
+	25%, 75% {
+		transform: translateX(-1rem);
+	}
+	50% {
+		transform: translateX(1rem);
+	}
+}
+
+#confetti {
+	position: absolute;
+	top: 0;
+	width: 100vw;
+	height: 100vh;
+	left: 0;
+	pointer-events: none;
+	z-index: 10;
+}

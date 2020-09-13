@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<title>{{pkg.name}} - v{{pkg.version}}</title>
+	{% set css %}{% include 'css/style.css' %}{% endset %}
+	<style>{{css | safe}}</style>
+	{% set login %}{% include 'js/login.js' %}{% endset %}
+	<script>{{ login | safe }}</script>
+</head>
+<body>
+	<!-- Sidebar -->
+	<aside class="loading">
+		<div class="card">
+			<div class="inline-layout">
+				<img class="avatar" src="assets/player.png" alt="Player picture">
+				<div>
+					<h1>Welcome {{player}}</h1>
+					<p>{{pkg.description}}</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="card">
+			<button onClick="completeTask()">Complete task</button>
+			<button onClick="completeGame()">Complete game</button>
+			<button onClick="reset()">Reset</button>
+		</div>
+
+		{% for quest in quests %}
+			<div class="card quest quest--locked">
+				<div class="inline-layout">
+					<div class="icon" data-emoji="{{quest.emoji}}"></div>
+					<div class="quest-title">
+						<h2>{{quest.title}}</h2>
+						<p>{{quest.description}}</p>
+					</div>
+					<div class="locked-title">
+						<h2>Locked</h2>
+						<p>Complete the previous quest to unlock</p>
+					</div>
+				</div>
+				<hr>
+				<ul class="tasks">
+				{% for task in quest.tasks %}
+					<li id="{{task.long}}_{{task.lat}}" class="inline-layout task task--locked">
+						<span class="icon"></span>
+						<p>{{task.title}}</p>
+					</li>
+				{% endfor %}
+				{% if quest.secret %}
+				<li id="secret-{{loop.index}}" class="inline-layout inline-layout--top task secret-task task--locked">
+					<div class="secret-icon"></div>
+					<div>
+						<label for="input-{{loop.index}}">{{quest.secret.title}}</label>
+						<input onInput="checkAnswer()" data-answer="{{quest.secret.answer}}" type="password" id="input-{{loop.index}}">
+					</div>
+				</li>
+				{% endif %}
+				</ul>
+			</div>
+		{% endfor %}
+		<div class="card completed-game">
+			<div class="inline-layout">
+				<div class="icon" data-emoji="❤️"></div>
+				<div>
+					<h2>{{completed.title}}</h2>
+					<p>{{completed.description}}</p>
+				</div>
+			</div>
+		</div>
+	</aside>
+
+	<!-- The main content area -->
+	<main id="map"></main>
+	<canvas id="confetti"></canvas>
+
+	{% set js %}{% include 'js/game.js' %}{% endset %}
+	{% set confetti %}{% include 'js/confetti.js' %}{% endset %}
+	<script>{{ confetti | safe }}{{ js | safe }}</script>
+	<script defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRw4-qe5m2OteiD3MkuDeDf6HSK_XFs4k&callback=initMap">
+	</script>
+</body>
+</html>

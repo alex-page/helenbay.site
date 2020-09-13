@@ -1,0 +1,32 @@
+{
+	"score": 0,
+	"quests": [{
+		"requiredScore": 0,
+		"tasks": [{
+			"clue": "",
+			"longitude": 0,
+			"latitude": 0
+		},
+		{
+			"clue": "",
+			"longitude": 0,
+			"latitude": 0
+		},
+		{
+			"clue": "",
+			"longitude": 0,
+			"latitude": 0
+		},
+		{
+			"clue": "",
+			"longitude": 0,
+			"latitude": 0
+		}]
+	},{
+		"requiredScore": 5000,
+		"question": "",
+		"answer": ""
+	},{
+
+	}]
+}
