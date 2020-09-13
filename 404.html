@@ -1,0 +1,327 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta http-equiv="x-ua-compatible" content="ie=edge"><title>helenbay.site - v0.0.0</title><style>:root{--base-font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";--base-font-size:1rem;--border-color:#ccc;--bg-color:#EFEFEF;--bg-lighter-color:#fff;--text-color:#24292e;--subdued-color:#61676A;--frame-background-color:#050505;--success-color:#2ea44f}*,::after,::before{box-sizing:border-box}html{font-family:var(--base-font);font-size:var(--base-font-size);font-weight:300;line-height:1.5;color:var(--text-color)}body{margin:0;display:flex;height:100vh;background:var(--bg-color)}h1,h2,p{margin:0}h1,h2{font-size:.875rem;font-weight:500}label,p{font-size:.75rem}hr{border:0;border-top:1px solid var(--border-color)}.card hr{margin:.5rem -.5rem}ul{margin:0;padding:0}main{height:100vh;width:100%;background:var(--frame-background-color)}aside{max-width:20rem;width:calc(100% - 1rem);padding:.5rem;display:flex;flex-direction:column}input{border-radius:.25rem;border:1px solid var(--border-color);width:100%;padding:.5rem .25rem}.inline-layout{display:flex;align-items:center}.inline-layout--top{align-items:start}.inline-layout>*+*{margin-left:.5rem}.task{min-height:1.875rem}.card{background:var(--bg-lighter-color);border-radius:.5rem;padding:.5rem;border-bottom:1px solid var(--border-color)}.card+.card{margin-top:.5rem}.avatar{width:30px;height:30px;border-radius:50%;display:inline}.icon,.secret-icon{font-size:20px;width:30px;text-align:center;flex-shrink:0}aside.loading>.card{display:none}.completed-game,.quest--active .locked-title,.quest--done .locked-title,.quest--locked .tasks,.quest--locked hr,.quest-title{display:none}.icon:before{content:attr(data-emoji)}.secret-icon:before{content:"✨"}.quest--locked .icon:before{content:"🔒"}.quest{will-change:height;transition:height .3s ease-in-out .5s;overflow:hidden}@keyframes glow{0%,100%{transform:0 0 10px #fcca25}50%{transform:0 0 5px #fcca25}}.quest--done{box-shadow:0 0 2px #fcca25;height:56px!important;animation:glow 1s ease-in-out}.quest--done .icon:before{content:"⭐️"}.quest--active .quest-title,.quest--done .quest-title{display:block}.task--active .icon:before{content:"→"}.secret-task{display:none}.task--done+.secret-task{display:flex}.task label,.task p{position:relative}.task--done{color:var(--success-color)}.task--locked{color:var(--subdued-color)}.quest--done .icon,.task--done .icon,.task--done .secret-icon{animation:bounce .3s ease-in-out}.task--done .icon:before,.task--done .secret-icon:before{content:"✓"}.task--locked .icon:before{content:""}@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}.task label:before,.task p:before{content:" ";position:absolute;display:block;width:100%;border-top:1px solid var(--success-color);transform:scaleX(0);transition:transform .3s ease-in-out;transform-origin:left;top:.6rem}.task--done label:before,.task--done p:before{transform:scaleX(1)}.shake{animation:shake 150ms ease-in-out .3s}@keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-1rem)}50%{transform:translateX(1rem)}}#confetti{position:absolute;top:0;width:100vw;height:100vh;left:0;pointer-events:none;z-index:10}</style><script>// Check that the person logging into the site is allowed
+const isAllowed = localStorage.getItem('allowed');
+
+if (!isAllowed) {
+	const answer = 'hobbitsrun';
+	const result = prompt('Please enter the secret code');
+
+	if (result === answer) {
+		localStorage.setItem('allowed', true);
+	} else {
+		window.stop();
+	}
+}</script></head><body><aside class="loading"><div class="card"><div class="inline-layout"><img class="avatar" src="assets/player.png" alt="Player picture"><div><h1>Welcome</h1><p>Search the map to unlock the next quest!</p></div></div></div><div class="card"><button onclick="completeTask()">Complete task</button> <button onclick="completeGame()">Complete game</button> <button onclick="reset()">Reset</button></div><div class="card completed-game"><div class="inline-layout"><div class="icon" data-emoji="❤️"></div><div><h2></h2><p></p></div></div></div></aside><main id="map"></main><canvas id="confetti"></canvas><script>// global variables
+const confetti = document.getElementById('confetti');
+console.log(confetti);
+const confettiCtx = confetti.getContext('2d');
+let container, confettiElements = [], clickPosition;
+
+// helper
+rand = (min, max) => Math.random() * (max - min) + min;
+
+// params to play with
+const confettiParams = {
+    // number of confetti per "explosion"
+    number: 70,
+    // min and max size for each rectangle
+    size: { x: [5, 20], y: [10, 18] },
+    // power of explosion
+    initSpeed: 25,
+    // defines how fast particles go down after blast-off
+    gravity: 0.65,
+    // how wide is explosion
+    drag: 0.08,
+    // how slow particles are falling
+    terminalVelocity: 6,
+    // how fast particles are rotating around themselves
+    flipSpeed: 0.017,
+};
+const colors = [
+    { front : '#3B870A', back: '#235106' },
+    { front : '#B96300', back: '#6f3b00' },
+    { front : '#E23D34', back: '#88251f' },
+    { front : '#CD3168', back: '#7b1d3e' },
+    { front : '#664E8B', back: '#3d2f53' },
+    { front : '#394F78', back: '#222f48' },
+    { front : '#008A8A', back: '#005353' },
+];
+
+setupCanvas();
+updateConfetti();
+
+confetti.addEventListener('click', addConfetti);
+window.addEventListener('resize', () => {
+    setupCanvas();
+    hideConfetti();
+});
+
+// Confetti constructor
+function Conf() {
+    this.randomModifier = rand(-1, 1);
+    this.colorPair = colors[Math.floor(rand(0, colors.length))];
+    this.dimensions = {
+        x: rand(confettiParams.size.x[0], confettiParams.size.x[1]),
+        y: rand(confettiParams.size.y[0], confettiParams.size.y[1]),
+    };
+    this.position = {
+        x: clickPosition[0],
+        y: clickPosition[1]
+    };
+    this.rotation = rand(0, 2 * Math.PI);
+    this.scale = { x: 1, y: 1 };
+    this.velocity = {
+        x: rand(-confettiParams.initSpeed, confettiParams.initSpeed) * 0.4,
+        y: rand(-confettiParams.initSpeed, confettiParams.initSpeed)
+    };
+    this.flipSpeed = rand(0.2, 1.5) * confettiParams.flipSpeed;
+
+    if (this.position.y <= container.h) {
+        this.velocity.y = -Math.abs(this.velocity.y);
+    }
+
+    this.terminalVelocity = rand(1, 1.5) * confettiParams.terminalVelocity;
+
+    this.update = function () {
+        this.velocity.x *= 0.98;
+        this.position.x += this.velocity.x;
+
+        this.velocity.y += (this.randomModifier * confettiParams.drag);
+        this.velocity.y += confettiParams.gravity;
+        this.velocity.y = Math.min(this.velocity.y, this.terminalVelocity);
+        this.position.y += this.velocity.y;
+
+        this.scale.y = Math.cos((this.position.y + this.randomModifier) * this.flipSpeed);
+        this.color = this.scale.y > 0 ? this.colorPair.front : this.colorPair.back;
+    }
+}
+
+function updateConfetti () {
+    confettiCtx.clearRect(0, 0, container.w, container.h);
+
+    confettiElements.forEach((c) => {
+        c.update();
+        confettiCtx.translate(c.position.x, c.position.y);
+        confettiCtx.rotate(c.rotation);
+        const width = (c.dimensions.x * c.scale.x);
+        const height = (c.dimensions.y * c.scale.y);
+        confettiCtx.fillStyle = c.color;
+        confettiCtx.fillRect(-0.5 * width, -0.5 * height, width, height);
+        confettiCtx.setTransform(1, 0, 0, 1, 0, 0)
+    });
+
+    confettiElements.forEach((c, idx) => {
+        if (c.position.y > container.h ||
+            c.position.x < -0.5 * container.x ||
+            c.position.x > 1.5 * container.x) {
+            confettiElements.splice(idx, 1)
+        }
+    });
+    window.requestAnimationFrame(updateConfetti);
+}
+
+function setupCanvas() {
+    container = {
+        w: confetti.clientWidth,
+        h: confetti.clientHeight
+    };
+    confetti.width = container.w;
+    confetti.height = container.h;
+}
+
+function addConfetti(e) {
+    const canvasBox = confetti.getBoundingClientRect();
+    if (e) {
+        clickPosition = [
+            e.clientX - canvasBox.left,
+            e.clientY - canvasBox.top
+        ];
+    } else {
+        clickPosition = [
+            canvasBox.width * Math.random(),
+            canvasBox.height * Math.random()
+        ];
+    }
+    for (let i = 0; i < confettiParams.number; i++) {
+        confettiElements.push(new Conf())
+    }
+}
+
+function hideConfetti() {
+    confettiElements = [];
+    window.cancelAnimationFrame(updateConfetti)
+}
+
+function confettiLoop() {
+	addConfetti();
+	setTimeout(confettiLoop, 700 + Math.random() * 1700);
+}
+// Check what level the user is up to and set up the game
+const quests = document.querySelectorAll('.quest');
+const sidebar = document.querySelector('aside');
+const map = document.querySelector('#map');
+
+const markers = [];
+let googleMap;
+
+if (localStorage.getItem('currentLevel') === 'winner'){
+	quests.forEach(quest => {
+		quest.classList.remove('quest--locked');
+		quest.classList.add('quest--done');
+	});
+} else if (localStorage.getItem('currentLevel')) {
+	// Load the current game
+	const task = document.getElementById(localStorage.getItem('currentLevel'));
+	const currentQuest = task.closest('.quest');
+	currentQuest.classList.remove('quest--locked');
+	currentQuest.classList.add('quest--active');
+	task.classList.remove('task--locked');
+	task.classList.add('task--active');
+
+	let previousTask = task.previousSibling;
+	while (previousTask) {
+		previousTask.classList.add('task--done');
+		previousTask.classList.remove('task--locked');
+		previousTask = previousTask.previousSibling;
+	}
+
+	let previousQuest = currentQuest.previousSibling;
+	while (previousQuest.classList.contains('quest')) {
+		previousQuest.classList.add('quest--done');
+		previousQuest.classList.remove('quest--locked');
+		previousQuest = previousQuest.previousSibling;
+	}
+} else {
+	// Set up a new game
+	const tasks = quests[0].querySelectorAll('.task');
+	localStorage.setItem('currentLevel', tasks[0].id);
+
+	quests[0].classList.remove('quest--locked');
+	quests[0].classList.add('quest--active');
+	tasks[0].classList.remove('task--locked');
+	tasks[0].classList.add('task--active');
+}
+
+// Show the sidebar once the levels are loaded
+sidebar.classList.remove('loading');
+
+const getMeters = (lat1, lon1, lat2, lon2) => {
+	const p = 0.017453292519943295; // Math.PI / 180
+	const c = Math.cos;
+	const a = 0.5 - c((lat2 - lat1) * p) / 2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+
+	return (12742 * Math.asin(Math.sqrt(a))) * 1000; // 2 * R; R = 6371 km
+};
+
+const completeTask = () => {
+	const completedTask = document.getElementById(localStorage.getItem('currentLevel'));
+	completedTask.classList.remove('task--active');
+	completedTask.classList.add('task--done');
+
+	const nextTask = completedTask.nextSibling;
+	if (nextTask) {
+		nextTask.classList.remove('task--locked');
+		nextTask.classList.add('task--active');
+		localStorage.setItem('currentLevel', nextTask.id);
+	} else {
+		setTimeout(() => {
+			const parentQuest = completedTask.closest('.quest');
+			completeQuest(parentQuest);
+		}, 500);
+	}
+};
+
+const completeGame = () => {
+	confettiLoop();
+	const completedMessage = document.querySelector('.completed-game');
+	completedMessage.style.display = 'block';
+	localStorage.setItem('currentLevel', 'winner');
+	const answers = [...document.querySelectorAll('.task')]
+		.map(task => task.id);
+
+	// Drop markers on quest end
+	let mapLoctions = answers.splice(0, answers.length - 1);
+	const markers = [];
+	mapLoctions.forEach(location => {
+		const [lat, lng] = location.split('_').map(i => Number.parseFloat(i));
+		markers.push(new google.maps.Marker({
+			position: {lat, lng},
+			animation: google.maps.Animation.DROP,
+			map: googleMap
+		}));
+	});
+}
+
+const completeQuest = parentQuest => {
+	parentQuest.classList.add('quest--done');
+	parentQuest.classList.remove('quest--active');
+
+	const nextQuest = parentQuest.nextSibling;
+	if (nextQuest) {
+		nextQuest.classList.add('quest--active');
+		nextQuest.classList.remove('quest--locked');
+		const nextTask = nextQuest.querySelector('.task');
+		nextTask.classList.add('task--active');
+		nextTask.classList.remove('task--locked');
+		localStorage.setItem('currentLevel', nextTask.id);
+	} else {
+		completeGame();
+	}
+};
+
+const checkLocation = mapEvent => {
+	if (localStorage.getItem('currentLevel') === 'winner') {
+		return;
+	}
+
+	const {lat, lng} = mapEvent.latLng;
+	const [taskLat, taskLong] = localStorage.getItem('currentLevel').split('_');
+	const metersFrom = getMeters(lat(), lng(), taskLat, taskLong);
+
+	// Hide all previous markers
+	markers.forEach(marker => marker.setMap(null));
+
+	if (metersFrom < 20) {
+		completeTask();
+		googleMap.setZoom(2);
+	} else {
+		markers.push(new google.maps.Marker({
+			position: mapEvent.latLng,
+			map: googleMap
+		}));
+		map.classList.add('shake');
+		setTimeout(() => {
+			map.classList.remove('shake');
+		}, 500);
+	}
+};
+
+const checkAnswer = () => {
+	const taskElement = document.getElementById(localStorage.getItem('currentLevel'));
+	const taskInput = taskElement.querySelector('input');
+
+	const currentAnswer = taskInput.value;
+	const correctAnswer = taskInput.dataset.answer;
+
+	if (currentAnswer === correctAnswer) {
+		setTimeout(() => {
+			completeTask();
+		}, 300);
+	}
+};
+
+const reset = () => {
+	localStorage.removeItem('currentLevel');
+	location.reload();
+};
+
+function initMap() {
+	googleMap = new google.maps.Map(map, {
+		zoom: 2,
+		center: {
+			lat: 0,
+			lng: 0
+		}
+	});
+
+	googleMap.addListener('click', checkLocation);
+};</script><script defer="defer" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRw4-qe5m2OteiD3MkuDeDf6HSK_XFs4k&callback=initMap"></script></body></html>
