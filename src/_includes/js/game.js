@@ -163,7 +163,8 @@ function initMap() {
 		center: {
 			lat: 0,
 			lng: 0
-		}
+		},
+		clickableIcons: false
 	});
 
 	googleMap.addListener('click', checkLocation);
