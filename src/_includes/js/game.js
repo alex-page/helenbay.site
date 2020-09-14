@@ -123,7 +123,7 @@ const checkLocation = mapEvent => {
 	// Hide all previous markers
 	markers.forEach(marker => marker.setMap(null));
 
-	if (metersFrom < 20) {
+	if (metersFrom < 30) {
 		completeTask();
 		googleMap.setZoom(2);
 	} else {
@@ -131,10 +131,21 @@ const checkLocation = mapEvent => {
 			position: mapEvent.latLng,
 			map: googleMap
 		}));
+
+		let distanceClass = 'far';
+
+		if (metersFrom < 20000) {
+			distanceClass = 'close';
+		} else if (metersFrom < 2000) {
+			distanceClass = 'near';
+		}
+
+		map.classList.add(distanceClass);
 		map.classList.add('shake');
+
 		setTimeout(() => {
-			map.classList.remove('shake');
-		}, 500);
+			map.removeAttribute('class');
+		}, 600);
 	}
 };
 

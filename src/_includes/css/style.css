@@ -271,7 +271,7 @@ aside.loading > .card {
 }
 
 .shake {
-	animation: shake 150ms ease-in-out 300ms;
+	animation: shake 150ms ease-in-out 50ms;
 }
 
 @keyframes shake {
@@ -286,12 +286,41 @@ aside.loading > .card {
 	}
 }
 
-#confetti {
+#confetti,
+#map:after {
 	position: absolute;
 	top: 0;
-	width: 100vw;
-	height: 100vh;
+	right: 0;
+	bottom: 0;
 	left: 0;
 	pointer-events: none;
 	z-index: 10;
+}
+
+#map {
+	position: relative;
+}
+
+#map:after {
+	opacity: 0;
+	content: " ";
+	transition: opacity ease-out 300ms;
+}
+
+#map.far:after {
+	opacity: 1;
+	box-shadow: inset 0 0 10vw 5vw rgba(255, 0, 0, 0.8);
+	transition-timing-function: ease-in;
+}
+
+#map.close:after {
+	opacity: 1;
+	box-shadow: inset 0 0 10vw 5vw rgba(255, 119, 0, 0.8);
+	transition-timing-function: ease-in;
+}
+
+#map.near:after {
+	opacity: 1;
+	box-shadow: inset 0 0 10vw 5vw rgba(191, 255, 0, 0.8);
+	transition-timing-function: ease-in;
 }
