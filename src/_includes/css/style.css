@@ -29,7 +29,6 @@ body {
 	margin: 0;
 	display: flex;
 	min-height: 100vh;
-	min-height: -webkit-fill-available;
 	background: var(--bg-color);
 	flex-direction: column;
 }
@@ -80,7 +79,7 @@ aside {
 	overflow-y: auto;
 }
 
-@media (min-width: 500px) {
+@media (min-width: 700px) {
 	body {
 		flex-direction: row;
 	}
@@ -90,7 +89,6 @@ aside {
 		max-width: 20rem;
 		min-height: 100vh;
 		width: calc(100% - 1rem);
-		min-height: -webkit-fill-available;
 	}
 }
 
