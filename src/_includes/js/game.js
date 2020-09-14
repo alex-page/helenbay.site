@@ -132,12 +132,14 @@ const checkLocation = mapEvent => {
 			map: googleMap
 		}));
 
-		let distanceClass = 'far';
+		let distanceClass;
 
-		if (metersFrom < 20000) {
-			distanceClass = 'close';
-		} else if (metersFrom < 2000) {
+		if (metersFrom < 2000) {
 			distanceClass = 'near';
+		} else if (metersFrom < 20000) {
+			distanceClass = 'close';
+		} else {
+			distanceClass = 'far';
 		}
 
 		map.classList.add(distanceClass);
