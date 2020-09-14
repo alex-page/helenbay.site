@@ -29,6 +29,7 @@ body {
 	margin: 0;
 	display: flex;
 	min-height: 100vh;
+	min-height: -webkit-fill-available;
 	background: var(--bg-color);
 	flex-direction: column;
 }
@@ -82,6 +83,7 @@ aside {
 @media (min-width: 700px) {
 	body {
 		flex-direction: row;
+		min-height: 100vh;
 	}
 
 	aside {
