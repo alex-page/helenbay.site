@@ -125,7 +125,7 @@ quests:
     lat: -75.654909
   - title: As close to the action as possible
     long: -35.249318
-    lat:149.080205 
+    lat: 149.080205
 - title: A walk in the park
   description: Can you find where we had a walk!
   emoji: 🥾
