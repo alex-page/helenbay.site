@@ -37,7 +37,7 @@ quests:
   description: Find places we have lived around the world!
   emoji: 🏡
   secret:
-    title: Take a walk to Lisgar to get the code.
+    title: Take a walk to Lisgar St to get the code.
     answer: bc
   tasks:
   - title: Baaaaa
@@ -117,12 +117,15 @@ quests:
   - title: Ice cream for dinner
     long: 45.429713
     lat: -75.681634
-  - title: A lay down after being in the sun
+  - title: A bench with shade on a hot day
     long: -35.289805
     lat: 149.093597
   - title: Thor would approve
     long: 45.428086
     lat: -75.654909
+  - title: As close to the action as possible
+    long: -35.249318
+    lat:149.080205 
 - title: A walk in the park
   description: Can you find where we had a walk!
   emoji: 🥾
