@@ -7,7 +7,7 @@ quests:
   emoji: 📑
   secret:
     title: Go on a picnic with a view to get the code.
-    answer: potato
+    answer: castle
   tasks:
   - title: Snakes and plants
     long:  -35.272505
