@@ -38,7 +38,7 @@ quests:
   emoji: 🏡
   secret:
     title: Take a walk to Lisgar St to get the code.
-    answer: bc
+    answer: bananapancakes
   tasks:
   - title: Baaaaa
     long: -35.226676
@@ -64,6 +64,40 @@ quests:
   - title: The goose and the geese
     long: 45.432796
     lat: -75.672421
+- title: A walk in the park
+  description: Can you find where we had a walk!
+  emoji: 🥾
+  secret:
+    title: Take a paddle to get the code!
+    answer: scroggin
+  tasks:
+  - title: Rock!   Rock!   Rock!
+    long: -39.155256
+    lat: 175.634463
+  - title: Our first hike and camp with tent
+    long: -37.040845
+    lat: 175.711810
+  - title: The ghost of a possum
+    long: -37.938192
+    lat: 175.0741968
+  - title: Whispers in the dark
+    long: -37.993573
+    lat: 175.091735
+  - title: An electrifying expedition
+    long: -36.775883
+    lat: 174.921769 
+  - title: Our beautiful view we summited
+    long: -36.787768
+    lat: 174.858184
+  - title: Our first hitch hike
+    long:  39.760100
+    lat: 2.641085
+  - title: The naked knife man
+    long: -34.506730
+    lat: 172.703494
+  - title: Prominent nipple
+    long: -35.349231
+    lat: 150.265092
 - title: Memorable food and drinks
   description: Find our favorite places to eat and drink!
   emoji: 🍕
@@ -126,37 +160,6 @@ quests:
   - title: As close to the action as possible
     long: -35.249318
     lat: 149.080205
-- title: A walk in the park
-  description: Can you find where we had a walk!
-  emoji: 🥾
-  secret:
-    title: Take a hike to get the code!
-    answer: scroggin
-  tasks:
-  - title: Rock!   Rock!   Rock!
-    long: -39.155256
-    lat: 175.634463
-  - title: Our first campsite
-    long: -37.040845
-    lat: 175.711810
-  - title: The ghost of a possum
-    long: -37.938192
-    lat: 175.0741968
-  - title: Whispers in the dark
-    long: -37.993573
-    lat: 175.091735
-  - title: Our beautiful view we summited
-    long: -36.787768
-    lat: 174.858184
-  - title: Our first hitch hike
-    long:  39.760100
-    lat: 2.641085
-  - title: The naked knife man
-    long: -34.506730
-    lat: 172.703494
-  - title: Prominent nipple
-    long: -35.349231
-    lat: 150.265092
 - title: Places of signifigance
   description: Find all the signifigant places!
   emoji: ✨

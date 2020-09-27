@@ -24,11 +24,11 @@
 			</div>
 		</div>
 
-		<!-- <div class="card">
+		<div class="card">
 			<button onClick="completeTask()">Complete task</button>
 			<button onClick="completeGame()">Complete game</button>
 			<button onClick="reset()">Reset</button>
-		</div> -->
+		</div>
 
 		{% for quest in quests %}
 			<div class="card quest quest--locked">
@@ -81,8 +81,7 @@
 	{% set js %}{% include 'js/game.js' %}{% endset %}
 	{% set confetti %}{% include 'js/confetti.js' %}{% endset %}
 	<script>{{ confetti | safe }}{{ js | safe }}</script>
-	<script defer
-	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRw4-qe5m2OteiD3MkuDeDf6HSK_XFs4k&callback=initMap">
+	<script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRw4-qe5m2OteiD3MkuDeDf6HSK_XFs4k&callback=initMap">
 	</script>
 </body>
 </html>
