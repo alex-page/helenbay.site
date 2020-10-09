@@ -98,34 +98,6 @@ quests:
   - title: Prominent nipple
     long: -35.349231
     lat: 150.265092
-- title: Ponyos paradise
-  description: Find Ponyo's favorite places!
-  emoji: 🐶
-  secret:
-    title: Take Ponyo to the dog park to get the code!
-    answer: ponjo
-  tasks:
-  - title: A drink in an illegal location
-    long: 45.428409
-    lat: -75.672715
-  - title: My spanish friend
-    long: 41.403432
-    lat: 2.210392
-  - title: A fun field with a few snakes
-    long: -35.299417
-    lat: 149.095250
-  - title: Ice cream for dinner
-    long: 45.429713
-    lat: -75.681634
-  - title: A bench with shade on a hot day
-    long: -35.289805
-    lat: 149.093597
-  - title: Thor would approve
-    long: 45.428086
-    lat: -75.654909
-  - title: As close to the action as possible
-    long: -35.249318
-    lat: 149.080205
 - title: Memorable food and drinks
   description: Find our favorite places to eat and drink!
   emoji: 🍕
@@ -160,6 +132,34 @@ quests:
   - title: A german feast for every meal
     long: 
     lat: 
+- title: Ponyos paradise
+  description: Find Ponyo's favorite places!
+  emoji: 🐶
+  secret:
+    title: Take Ponyo to the dog park to get the code!
+    answer: ponjo
+  tasks:
+  - title: A drink in an illegal location
+    long: 45.428409
+    lat: -75.672715
+  - title: My spanish friend
+    long: 41.403432
+    lat: 2.210392
+  - title: A fun field with a few snakes
+    long: -35.299417
+    lat: 149.095250
+  - title: Ice cream for dinner
+    long: 45.429713
+    lat: -75.681634
+  - title: A bench with shade on a hot day
+    long: -35.289805
+    lat: 149.093597
+  - title: Thor would approve
+    long: 45.428086
+    lat: -75.654909
+  - title: As close to the action as possible
+    long: -35.249318
+    lat: 149.080205
 - title: Places of signifigance
   description: Find all the signifigant places!
   emoji: ✨
