@@ -130,8 +130,8 @@ quests:
     long: 45.503166
     lat: -75.810205
   - title: A german feast for every meal
-    long: 
-    lat: 
+    long: 51.505620
+    lat: 7.114137
 - title: Ponyos paradise
   description: Find Ponyo's favorite places!
   emoji: 🐶
