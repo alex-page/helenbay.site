@@ -290,9 +290,9 @@ aside.loading > .card {
 #map:after {
 	position: absolute;
 	top: 0;
-	right: 0;
-	bottom: 0;
 	left: 0;
+	width: 100vh;
+	height: 100vw;
 	pointer-events: none;
 	z-index: 10;
 }

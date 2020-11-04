@@ -99,15 +99,16 @@ const completeQuest = parentQuest => {
 	parentQuest.classList.remove('quest--active');
 
 	const nextQuest = parentQuest.nextSibling;
-	if (nextQuest) {
+	if (nextQuest.classList.contains('completed-game')) {
+		completeGame();
+	} else {
+		console.log(nextQuest);
 		nextQuest.classList.add('quest--active');
 		nextQuest.classList.remove('quest--locked');
 		const nextTask = nextQuest.querySelector('.task');
 		nextTask.classList.add('task--active');
 		nextTask.classList.remove('task--locked');
 		localStorage.setItem('currentLevel', nextTask.id);
-	} else {
-		completeGame();
 	}
 };
 

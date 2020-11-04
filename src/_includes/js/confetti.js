@@ -1,6 +1,5 @@
 // global variables
 const confetti = document.getElementById('confetti');
-console.log(confetti);
 const confettiCtx = confetti.getContext('2d');
 let container, confettiElements = [], clickPosition;
 
